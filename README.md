@@ -10,15 +10,15 @@ This repository contains code for the SPHINXVerify project, which is a `Verify` 
 
 The provided code is using the ZK-STARK (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge) protocol for verification purposes. ZK-STARK is a cryptographic protocol that enables the prover to convince the verifier about the correctness of a statement without revealing any information beyond the validity of the statement.
 
-ZK-STARK offers significant benefits compared to multi-signature schemes in terms of privacy and security.
+ZK-STARK offers significant benefits compared to ZK-SNARK schemes in terms of privacy and security.
 
-Privacy: ZK-STARK allows users to prove the validity of transactions without revealing any sensitive information, such as private keys. In contrast, multi-signature schemes typically require the involvement of multiple parties and the exposure of their public keys, which can potentially be used to link transactions and compromise privacy.
+1. Privacy: ZK-STARK allows users to prove the validity of transactions without revealing any sensitive information, such as private keys. In contrast, multi-signature schemes typically require the involvement of multiple parties and the exposure of their public keys, which can potentially be used to link transactions and compromise privacy.
 
-Efficiency: ZK-STARK provides succinct non-interactive proofs, meaning that the proof size remains fixed regardless of the complexity of the statement being proven. This efficiency allows for faster and more scalable verification compared to multi-signature schemes, which often require multiple signatures and larger data structures to store the public keys of involved parties.
+2. Efficiency: ZK-STARK provides succinct non-interactive proofs, meaning that the proof size remains fixed regardless of the complexity of the statement being proven. This efficiency allows for faster and more scalable verification compared to multi-signature schemes, which often require multiple signatures and larger data structures to store the public keys of involved parties.
 
-Trustlessness: ZK-STARK provides a high level of trustlessness as it eliminates the need for trust in the verification process. The validity of a transaction can be mathematically proven using the ZK-STARK proof, without relying on the trustworthiness of specific parties or intermediaries. In multi-signature schemes, trust is placed on the participating entities to sign transactions correctly and honestly.
+3. Trustlessness: ZK-STARK provides a high level of trustlessness as it eliminates the need for trust in the verification process. The validity of a transaction can be mathematically proven using the ZK-STARK proof, without relying on the trustworthiness of specific parties or intermediaries. In multi-signature schemes, trust is placed on the participating entities to sign transactions correctly and honestly.
 
-Security: ZK-STARK offers strong cryptographic security guarantees. It relies on the assumption that the underlying cryptographic primitives, such as hash functions and digital signatures, are secure. In contrast, multi-signature schemes may be susceptible to attacks targeting the key management infrastructure or compromising the security of individual private keys.
+4. Security: ZK-STARK offers strong cryptographic security guarantees. It relies on the assumption that the underlying cryptographic primitives, such as hash functions and digital signatures, are secure. In contrast, multi-signature schemes may be susceptible to attacks targeting the key management infrastructure or compromising the security of individual private keys.
 
 In summary, the usage of ZK-STARK in the provided code enhances the privacy, efficiency, trustlessness, and security of transaction broadcasting compared to multi-signature schemes. It enables users to prove transaction validity without revealing sensitive information and provides a robust cryptographic foundation for secure and private blockchain transactions.
 
