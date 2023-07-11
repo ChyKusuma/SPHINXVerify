@@ -8,6 +8,10 @@ This repository contains code for the SPHINXVerify project, which is a `Verifica
 
 ## Components
 
+The issue with general user transactions is that they typically require the exposure of private keys to sign the transaction data. This can pose a significant security risk as exposing private keys can lead to unauthorized access and control over the user's assets or sensitive information. Additionally, it can compromise the privacy of the user by linking their identity to the transactions they sign.
+
+The solution provided by ZK-STARK is to utilize zero-knowledge proofs. Zero-knowledge proofs allow users to prove the validity of transactions or statements without revealing any sensitive information, such as private keys. In the context of transaction signing, ZK-STARK enables users to demonstrate knowledge of the private key and the ability to sign transactions correctly without actually disclosing the private key itself.
+
 The provided code is using the ZK-STARK (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge) protocol for verification purposes. ZK-STARK is a cryptographic protocol that enables the prover to convince the verifier about the correctness of a statement without revealing any information beyond the validity of the statement.
 
 ZK-STARK offers significant benefits compared to ZK-SNARK schemes in terms of privacy and security.
