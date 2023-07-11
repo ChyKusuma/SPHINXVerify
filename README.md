@@ -27,9 +27,7 @@ In summary, the usage of ZK-STARK in the provided code enhances the privacy, eff
 
 The `SPHINXVerify` namespace contains functions for verifying SPHINX blocks and chains, performing data verification, and simulating the interaction between a prover and a verifier using the SPHINX protocol.
 
-#### `verifySPHINXBlock(block, signature, public_key)`
-
-Verifies the signature of a SPHINX block.
+####`verifySPHINXBlock(block, signature, public_key)` Verifies the signature of a SPHINX block.
 
 - `block`: A `SPHINXBlock` object representing the block to be verified.
 - `signature`: A string containing the signature of the block.
@@ -37,9 +35,7 @@ Verifies the signature of a SPHINX block.
 
 Returns a boolean value indicating whether the signature is valid.
 
-#### `verifySPHINXChain(chain)`
-
-Verifies the integrity of a SPHINX chain.
+####`verifySPHINXChain(chain)` Verifies the integrity of a SPHINX chain.
 
 - `chain`: A `SPHINX_Chain` object representing the chain to be verified.
 
@@ -47,9 +43,7 @@ Returns a boolean value indicating whether the chain is valid. The function perf
 - Verifies the signature of each block in the chain using `verifySPHINXBlock`.
 - Checks if the blocks are properly linked together.
 
-#### `verify_data(data, signature, verifier_public_key)`
-
-Verifies data using a signature and public key.
+####`verify_data(data, signature, verifier_public_key)` Verifies data using a signature and public key.
 
 - `data`: A vector of `uint8_t` representing the data to be verified.
 - `signature`: A string containing the signature of the data.
@@ -57,9 +51,7 @@ Verifies data using a signature and public key.
 
 Returns a boolean value indicating whether the data is valid.
 
-#### `verify_sphinx_protocol()`
-
-Simulates the interaction between a SPHINX prover and verifier using the SPHINX protocol.
+####`verify_sphinx_protocol()` Simulates the interaction between a SPHINX prover and verifier using the SPHINX protocol.
 
 Returns a boolean value indicating the final result of the simulation. The function performs the following steps:
 - Creates instances of `SPHINXProver` and `SPHINXVerifier` objects.
