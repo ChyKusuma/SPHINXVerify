@@ -12,27 +12,49 @@
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-// The code is a header file that defines a namespace SPHINXVerify containing functions for verifying SPHINX blocks and chains using a protocol library called "Protocol.hpp" based on ZK-STARK.
+// The provided code defines a namespace SPHINXVerify that contains several functions for verifying the integrity and authenticity of SPHINX blocks and chains, as well as generating and verifying zero-knowledge proofs.
 
-  // The code starts with an include guard #ifndef VERIFY_HPP and ends with #endif // VERIFY_HPP. This ensures that the header file is included only once during compilation.
+// verifySPHINXBlock function:
+  // Parameters: block (SPHINXBlock), signature (string), public_key (SPHINX_PublicKey).
+  // This function verifies the signature of a given SPHINX block using the provided signature and public_key.
+  // It calls the Crypto::verify function with the block's hash, signature, and public key to perform the verification.
+  // Returns true if the signature is valid, false otherwise.
 
-  // The necessary header files are included using #include directives. These include "Sign.hpp", "Chain.hpp", "Block.hpp", and the external library "Protocol.hpp" from the "Libstark/src/protocols" directory.
+// verifySPHINXChain function:
+  // Parameters: chain (SPHINX_Chain).
+  // This function verifies the integrity of each block in the provided chain.
+  // If the chain is empty (length is 0), it is considered valid and the function returns true.
+  // Otherwise, it iterates over each block in the chain and performs the following verifications:
+  // Calls verifySPHINXBlock to verify the signature of each block.
+  // Checks if the blocks are properly linked together by comparing the previous hash of each block with the hash of the previous block.
+  // If any invalid block or improper linkage is detected, the function returns false.
+  // If all blocks are verified and the chain is valid, the function returns true.
 
-  // The code defines a namespace SPHINXVerify to encapsulate the verification functions.
+// verify_data function:
+  // Parameters: data (vector of uint8_t), signature (string), verifier_public_key (vector of uint8_t).
+  // This function verifies the validity of a data object by performing the following steps:
+  // Calls Crypto::verify function with data, signature, and verifier_public_key to check if the signature is valid.
+  // If the signature is valid, it proceeds to generate and verify a zero-knowledge proof by using libstark::Protocols::ProverInterface and libstark::Protocols::verifierInterface objects.
+  // Creates instances of the prover and verifier parties.
+  // Passes the necessary data to the verifier by calling its receiveMessage function with a NecessaryDataMessage object.
+  // Generates the proof by calling the sendMessage function from the prover object, which returns a message pointer (proofMessage).
+  // Passes the proof message to the verifier by calling its receiveMessage function with the proofMessage.
+  // Verifies the proof by calling the verify function from the verifier object.
+  // Returns true if the proof is valid, false otherwise.
+  // If the initial signature verification fails, the function returns false without generating or verifying the proof.
 
-  // The function verifySPHINXBlock takes a SPHINXBlock object, a signature (string), and a SPHINX_PublicKey object as input. It verifies the signature of the block using the provided signature and public key by calling SPHINXSign::verify_data. The result of the verification is returned as a boolean value.
+// verify_sphinx_protocol function:
+  // This function demonstrates the interaction between a SPHINXProver and SPHINXVerifier objects to perform a protocol.
+  // It creates instances of the prover and verifier.
+  // Calls the sendMessage function from the verifier object to get the initial message.
+  // Creates a TranscriptMessage pointer and assigns the initial message to it.
+  // Continues the interaction between the prover and verifier until the verifier is done (based on doneInteracting).
+  // Sends the message to the prover and receives the response message.
+  // Moves the response message to the TranscriptMessage pointer.
+  // Sends the message to the verifier.
+  // Finally, verifies the final result by calling the verify function from the verifier object and returns the result.
 
-  // The function verifySPHINXChain takes a SPHINX_Chain object as input. It first retrieves the length of the chain using the getChainLength method. If the chain is empty (length == 0), it considers it valid and returns true. Otherwise, it iterates over each block in the chain and performs the following verifications:
-
-  // It verifies the signature of the current block by calling verifySPHINXBlock with the current block, its signature, and public key. If the block's signature is invalid, it returns false.
-
-  // For each block except the first block, it checks if the PreviousHash of the current block matches the hash of the previous block. If the blocks are not properly linked together, it returns false.
-
-  // If all verifications pass, it indicates that all blocks have been verified, and the chain is considered valid. In that case, it returns true.
-
-  // The function verify_data takes the data to be verified (as a vector of uint8_t), a signature (string), and a verifier's public key (as a vector of uint8_t) as input. Inside the function, it calls the verify function from the sphincs_inner namespace in the external protocol library, passing the data, signature, and verifier's public key. The verify function performs the verification using the ZK-STARK protocol and returns a boolean value indicating the result of the verification.
-
-// This code provides functions to verify the integrity and authenticity of SPHINX blocks and chains using the ZK-STARK protocol through the external library "Protocol.hpp". It utilizes the SPHINXSign class for block signature verification and relies on the provided SPHINX_Chain, SPHINXBlock, and SPHINX_PublicKey classes for block and chain information.
+// This code utilizes the libstark protocol library and cryptographic techniques to verify SPHINX blocks and chains, as well as generate and verify zero-knowledge proofs.
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -96,7 +118,28 @@ namespace SPHINXVerify {
 
     bool verify_data(const std::vector<uint8_t>& data, const std::string& signature, const std::vector<uint8_t>& verifier_public_key) {
         bool valid = Crypto::verify(data, signature, verifier_public_key);
-        return valid;
+
+        if (valid) {
+            // Create instances of the prover and verifier parties
+            libstark::Protocols::ProverInterface prover;
+            libstark::Protocols::verifierInterface verifier;
+
+            // Pass the necessary data to the verifier by calling its receiveMessage function
+            verifier.receiveMessage(NecessaryDataMessage(data, signature, verifier_public_key));
+
+            // Generate the proof by calling the sendMessage function from the prover object
+            libstark::Protocols::msg_ptr_t proofMessage = prover.sendMessage();
+
+            // Pass the proof message to the verifier by calling its receiveMessage function
+            verifier.receiveMessage(*proofMessage);
+
+            // Verify the proof by calling the verify function from the verifier object
+            bool proofValid = verifier.verify();
+
+            return proofValid;
+        }
+
+        return false;
     }
 
     bool verify_sphinx_protocol() {
