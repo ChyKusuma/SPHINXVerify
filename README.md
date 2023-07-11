@@ -10,23 +10,22 @@ This repository contains code for the SPHINXSign project, which is a `Verify` mo
 
 The provided code is using the ZK-STARK (Zero-Knowledge Succinct Non-Interactive Argument of Knowledge) protocol for verification purposes. ZK-STARK is a cryptographic protocol that enables the prover to convince the verifier about the correctness of a statement without revealing any information beyond the validity of the statement.
 
-In the context of the code, ZK-STARK is used to verify the integrity and authenticity of SPHINX blocks and chains. The ZK-STARK protocol ensures that the blocks have not been tampered with and that they are linked together correctly.
+ZK-STARK offers significant benefits compared to multi-signature schemes in terms of privacy and security.
 
-Here are the reasons why ZK-STARK is chosen for verification:
+Privacy: ZK-STARK allows users to prove the validity of transactions without revealing any sensitive information, such as private keys. In contrast, multi-signature schemes typically require the involvement of multiple parties and the exposure of their public keys, which can potentially be used to link transactions and compromise privacy.
 
-1. Security: ZK-STARK provides strong security guarantees. It ensures that the verification process is secure and resistant to attacks such as tampering with block data or forging signatures.
+Efficiency: ZK-STARK provides succinct non-interactive proofs, meaning that the proof size remains fixed regardless of the complexity of the statement being proven. This efficiency allows for faster and more scalable verification compared to multi-signature schemes, which often require multiple signatures and larger data structures to store the public keys of involved parties.
 
-2. Efficiency: ZK-STARK is designed to be efficient and provide succinct proofs. It allows for efficient verification of large amounts of data with minimal computational overhead.
+Trustlessness: ZK-STARK provides a high level of trustlessness as it eliminates the need for trust in the verification process. The validity of a transaction can be mathematically proven using the ZK-STARK proof, without relying on the trustworthiness of specific parties or intermediaries. In multi-signature schemes, trust is placed on the participating entities to sign transactions correctly and honestly.
 
-3. Non-Interactivity: ZK-STARK is a non-interactive protocol, meaning that the prover and verifier only need to exchange a fixed number of messages to complete the verification. This property simplifies the verification process and reduces the communication overhead.
+Security: ZK-STARK offers strong cryptographic security guarantees. It relies on the assumption that the underlying cryptographic primitives, such as hash functions and digital signatures, are secure. In contrast, multi-signature schemes may be susceptible to attacks targeting the key management infrastructure or compromising the security of individual private keys.
 
-4. Zero-Knowledge Property: ZK-STARK guarantees zero-knowledge property, which means that the verification process does not reveal any additional information about the data being verified. It ensures that the confidentiality of sensitive information is maintained during the verification process.
+In summary, the usage of ZK-STARK in the provided code enhances the privacy, efficiency, trustlessness, and security of transaction broadcasting compared to multi-signature schemes. It enables users to prove transaction validity without revealing sensitive information and provides a robust cryptographic foundation for secure and private blockchain transactions.
 
-By leveraging the ZK-STARK protocol, the code achieves a high level of security and efficiency in verifying SPHINX blocks and chains, ensuring the integrity and authenticity of the data.
 
-#### SPHINXVerify Namespace
+### SPHINXVerify Namespace
 
-The `SPHINXVerify` namespace encapsulates verification functions for SPHINX blocks and chains.
+The `SPHINXVerify` namespace contains functions for verifying SPHINX blocks and chains, performing data verification, and simulating the interaction between a prover and a verifier using the SPHINX protocol.
 
 #### `verifySPHINXBlock(block, signature, public_key)`
 
@@ -60,20 +59,18 @@ Returns a boolean value indicating whether the data is valid.
 
 #### `verify_sphinx_protocol()`
 
-Simulates the interaction between a SPHINXProver and a SPHINXVerifier object.
+Simulates the interaction between a SPHINX prover and verifier using the SPHINX protocol.
 
 Returns a boolean value indicating the final result of the simulation. The function performs the following steps:
-- Creates instances of `SPHINXProver` and `SPHINXVerifier`.
+- Creates instances of `SPHINXProver` and `SPHINXVerifier` objects.
 - Initiates the interaction by obtaining the initial message using `sendMessage` from the verifier object.
-- Continues the interaction until the verifier is done interacting:
+- Continues the interaction until the verifier is done by:
   - The prover receives the message from the verifier using `receiveMessage`.
   - The prover sends the response message using `sendMessage`.
   - The response message is passed back to the verifier using `receiveMessage`.
 - Verifies the final result using `verify` from the verifier object.
 
-## Overall Functionality
-
-The code provides functions to verify SPHINX blocks and chains, perform data verification, and simulate the interaction between a prover and a verifier using the SPHINX protocol.
+The code provides functions to verify SPHINX blocks and chains, perform data verification, and simulate the interaction between a prover and a verifier using the SPHINX protocol. These functions utilize the capabilities of the `libstark::Protocols::ProverInterface` and `libstark::Protocols::verifierInterface` objects to generate and verify proofs, allowing for secure and private verification of transactions in a blockchain system.
 
 
 ### Note
