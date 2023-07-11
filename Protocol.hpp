@@ -1,3 +1,17 @@
+/*
+ *  Copyright (c) (2023) SPHINX_ORG
+ *  Authors:
+ *    - (C kusuma) <thekoesoemo@gmail.com>
+ *      GitHub: (https://github.com/chykusuma)
+ *  Contributors:
+ *    - (Contributor 1) <email1@example.com>
+ *      Github: (https://github.com/yourgit)
+ *    - (Contributor 2) <email2@example.com>
+ *      Github: (https://github.com/yourgit)
+ */
+
+
+
 #ifndef PROTOCOL_HPP__
 #define PROTOCOL_HPP__
 
