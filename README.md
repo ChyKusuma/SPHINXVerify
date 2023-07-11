@@ -27,7 +27,7 @@ In summary, the usage of ZK-STARK in the provided code enhances the privacy, eff
 
 The `SPHINXVerify` namespace contains functions for verifying SPHINX blocks and chains, performing data verification, and simulating the interaction between a prover and a verifier using the SPHINX protocol.
 
-###### `verifySPHINXBlock(block, signature, public_key)`
+`verifySPHINXBlock(block, signature, public_key)`
 
 Verifies the signature of a SPHINX block.
 
@@ -37,7 +37,7 @@ Verifies the signature of a SPHINX block.
 
 Returns a boolean value indicating whether the signature is valid.
 
-###### `verifySPHINXChain(chain)`
+`verifySPHINXChain(chain)`
 
 Verifies the integrity of a SPHINX chain.
 
@@ -47,7 +47,7 @@ Returns a boolean value indicating whether the chain is valid. The function perf
 - Verifies the signature of each block in the chain using `verifySPHINXBlock`.
 - Checks if the blocks are properly linked together.
 
-###### `verify_data(data, signature, verifier_public_key)`
+`verify_data(data, signature, verifier_public_key)`
 
 Verifies data using a signature and public key.
 
@@ -57,7 +57,7 @@ Verifies data using a signature and public key.
 
 Returns a boolean value indicating whether the data is valid.
 
-###### `verify_sphinx_protocol()`
+`verify_sphinx_protocol()`
 
 Simulates the interaction between a SPHINX prover and verifier using the SPHINX protocol.
 
