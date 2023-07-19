@@ -12,8 +12,11 @@
 
 
 
+
 #ifndef PROTOCOL_HPP__
 #define PROTOCOL_HPP__
+
+#pragma once
 
 #include "languages/Bair/BairInstance.hpp"
 #include "languages/Bair/BairWitness.hpp"
@@ -27,6 +30,10 @@
 #include <string>
 
 #include "../Verify.hpp"
+#include "../Block.hpp"
+#include "../Chain.hpp"
+#include "../Sign.hpp"
+
 
 namespace libstark {
 namespace Protocols {
@@ -51,6 +58,8 @@ namespace Protocols {
         virtual ~PartieInterface() {};
     };
 
+
+    // Verifier class
     class verifierInterface : public PartieInterface {
     public:
         virtual ~verifierInterface() {};
@@ -61,9 +70,15 @@ namespace Protocols {
         virtual size_t expectedSentProofBytes() const = 0;
         virtual size_t expectedQueriedDataBytes() const = 0;
 
+        // Add the SPHINX verification methods
+        virtual bool verifySPHINXBlock(const SPHINXBlock& block, const std::string& signature, const SPHINX_PublicKey& public_key) = 0;
+        virtual bool verifySPHINXChain(const SPHINXChain& chain) = 0;
+
         virtual void fillResultsAndCommitmentRandomly() = 0;
     };
 
+
+    // Prover class
     class ProverInterface : public PartieInterface {
     public:
         // Declare the necessary methods for the Prover
@@ -75,14 +90,24 @@ namespace Protocols {
         virtual size_t expectedSentProofBytes() const = 0;
         virtual size_t expectedQueriedDataBytes() const = 0;
 
+        // Add the SPHINX verification methods
+        virtual bool verifySPHINXBlock(const SPHINXBlock& block, const std::string& signature, const SPHINX_PublicKey& public_key) = 0;
+        virtual bool verifySPHINXChain(const SPHINXChain& chain) = 0;
+
         virtual void fillResultsAndCommitmentRandomly() = 0;
     };
 
-    // A party that wants to verify a very big and fixed input
-    // is closed to some code C.
-    //
-    // The verifier first interacts with the prover,
-    // and after that reads from the input.
+
+    // The `ProverInterface` and `verifierInterface` do not include the "private key" because they are designed as abstraction interfaces for cryptographic protocols. These interfaces hide the specific implementation details, including any private keys, and provide a clean and secure way to interact with the protocol.
+
+    // Including the private key in these interfaces would break the abstraction and expose sensitive information to the external code using these interfaces. Cryptographic protocols typically keep the private key hidden and only use it internally within their implementations.
+
+    // In this specific case, the `SPHINXVerify` namespace contains functions that require a private key, such as `sign_data`. The implementations of the `verifierInterface` and `ProverInterface` interfaces handle the interaction with the `SPHINXVerify` functions internally, without exposing the private key to the outside world.
+
+    // For example, in the methods `verifySPHINXBlock` and `verifySPHINXChain` of both `verifierInterface` and `ProverInterface`, the private key is used internally to call the appropriate `SPHINXVerify` functions for verification.
+
+    // By keeping the private key hidden within the implementations of these interfaces, the security of the cryptographic protocol is maintained, and the users of these interfaces can securely interact with the verification and proving processes without having direct access to sensitive information.
+
 
     typedef std::map<size_t, std::vector<Algebra::FieldElement*>> queriesToInp_t;
     class IOPP_verifierInterface : public verifierInterface {
@@ -105,15 +130,32 @@ namespace Protocols {
         void printAcspPairSpec(const AcspInstance& instance, const AcspWitness& witness);
     }
 
+    // Sphinx Verify
     namespace SPHINXVerify {
+        bool verifierImplementation::verifySPHINXBlock(const SPHINXBlock& block, const std::string& signature, const SPHINX_PublicKey& public_key) {
+        // Call the SPHINXVerify::verifySPHINXBlock function
+        bool blockVerified = SPHINXVerify::verifySPHINXBlock(block, signature, public_key);
+        return blockVerified;
+    }
 
-        bool verifySPHINXBlock(const SPHINXBlock& block, const std::string& signature, const SPHINX_PublicKey& public_key);
-        bool verifySPHINXChain(const SPHINX_Chain& chain);
-        bool verify_data(const std::vector<uint8_t>& data, const std::string& signature, const std::vector<uint8_t>& verifier_public_key);
-        bool verify_sphinx_protocol();
+    bool verifierImplementation::verifySPHINXChain(const SPHINXChain& chain) {
+        // Call the SPHINXVerify::verifySPHINXChain function
+        bool chainVerified = SPHINXVerify::verifySPHINXChain(chain);
+        return chainVerified;
+    }
 
-    } // namespace SPHINXVerify
+    bool proverImplementation::verifySPHINXBlock(const SPHINXBlock& block, const std::string& signature, const SPHINX_PublicKey& public_key) {
+        // Call the SPHINXVerify::verifySPHINXBlock function
+        bool blockVerified = SPHINXVerify::verifySPHINXBlock(block, signature, public_key);
+        return blockVerified;
+    }
 
+    bool proverImplementation::verifySPHINXChain(const SPHINXChain& chain) {
+        // Call the SPHINXVerify::verifySPHINXChain function
+        bool chainVerified = SPHINXVerify::verifySPHINXChain(chain);
+        return chainVerified;
+    }
+} // namespace Sphinxverify
 } // namespace Protocols
 } // namespace libstark
 
